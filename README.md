@@ -5,44 +5,55 @@ RefuCare is a cross-language, fault-tolerant microservices lab designed for teac
 ```mermaid
 flowchart TD
     subgraph Gateway
-        Traefik[Traefik]
+        Traefik
     end
 
     subgraph Services
-        Vitals[Fiber]
-        Records[Spring]
-        Analyzer[FastAPI]
+        Vitals
+        Records
+        Analyzer
     end
 
     subgraph Databases
         Postgres[(PostgreSQL)]
         Mongo[(MongoDB)]
-        Redis[(Redis)]
+        Redis[(Redis Cache)]
     end
 
     subgraph Infrastructure
-        Eureka[Eureka]
-        RabbitMQ[RabbitMQ]
-        Prometheus[Prometheus]
-        Grafana[Grafana]
+        Eureka
+        RabbitMQ
+        Prometheus
+        Grafana
     end
 
-    Client[Client Application] --> Traefik
+    %% Client interacts with system
+    Client --> Traefik
+
+    %% Traefik routes to services
     Traefik --> Vitals
+    Traefik --> Records
+    Traefik --> Analyzer
+
+    %% Vitals service interactions
     Vitals --> Redis
-
-
     Vitals --> RabbitMQ
-    Analyzer --> RabbitMQ
-    Records --> Postgres
-    Analyzer --> Mongo
-
     Vitals --> Eureka
-    Records --> Eureka
-
     Vitals --> Prometheus
+
+    %% Records service
+    Records --> Postgres
+    Records --> Eureka
     Records --> Prometheus
+
+    %% Analyzer service
+    Analyzer --> RabbitMQ
+    Analyzer --> Mongo
+    Analyzer --> Prometheus
+
+    %% Infrastructure
     Traefik --> Prometheus
     RabbitMQ --> Prometheus
     Prometheus --> Grafana
+
 ```

@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option java_package = "com.refu.care.records_service.grpc";
+option java_multiple_files = true;
+
+service PatientRecords {
+  rpc AppendVitals (VitalsRequest) returns (StatusResponse);
+  rpc GetPatientInfo (PatientId) returns (PatientInfo);
+}
+
+message VitalsRequest {
+  string patient_id = 1;
+  float systolic = 2;
+  float diastolic = 3;
+  float heart_rate = 4;
+  float temperature = 5;
+  string timestamp = 6;
+}
+
+message PatientId {
+  string id = 1;
+}
+
+message PatientInfo {
+  string name = 1;
+  int32 age = 2;
+  bool has_diabetes = 3;
+}
+
+message StatusResponse {
+  string status = 1;
+}

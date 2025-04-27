@@ -24,3 +24,5 @@ go.work.sum
 # env file
 .env
 .vscode
+prediction-service/venv
+prediction-service/app/core/data/model.pkl
